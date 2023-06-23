@@ -2,10 +2,7 @@ package com.theoahga.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -24,8 +21,16 @@ public class AuthenticationController {
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
-    return ResponseEntity.ok(authenticationService.authenticate(request));
+    AuthenticationResponse authenticationResponse = authenticationService.authenticate(request);
+    if(authenticationResponse == null){
+      return ResponseEntity.status(203).build();
+    }
+    return ResponseEntity.ok(authenticationResponse);
   }
 
-
+  @GetMapping("/ping")
+  public ResponseEntity<Object> ping(
+  ) {
+    return ResponseEntity.ok().build();
+  }
 }
